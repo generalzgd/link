@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"io"
 	"reflect"
+	`time`
 
-	"github.com/funny/link"
+	"github.com/generalzgd/link"
 )
 
 type JsonProtocol struct {
@@ -64,6 +65,18 @@ type jsonCodec struct {
 	closer  io.Closer
 	encoder *json.Encoder
 	decoder *json.Decoder
+}
+
+func (c *jsonCodec) SocketID() uint32 {
+	return 0
+}
+
+func (c *jsonCodec) ClientAddr() string {
+	return ""
+}
+
+func (c *jsonCodec) SetReadDeadline(t time.Time) error {
+	return nil
 }
 
 func (c *jsonCodec) Receive() (interface{}, error) {

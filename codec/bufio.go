@@ -3,8 +3,9 @@ package codec
 import (
 	"bufio"
 	"io"
+	`time`
 
-	"github.com/funny/link"
+	"github.com/generalzgd/link"
 )
 
 func Bufio(base link.Protocol, readBuf, writeBuf int) link.Protocol {
@@ -71,6 +72,18 @@ func (s *bufioStream) close() error {
 type bufioCodec struct {
 	base   link.Codec
 	stream bufioStream
+}
+
+func (c *bufioCodec) SocketID() uint32 {
+	return 0
+}
+
+func (c *bufioCodec) ClientAddr() string {
+	return ""
+}
+
+func (c *bufioCodec) SetReadDeadline(t time.Time) error {
+	return nil
 }
 
 func (c *bufioCodec) Send(msg interface{}) error {

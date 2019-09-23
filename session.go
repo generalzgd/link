@@ -6,8 +6,8 @@ import (
 	"sync/atomic"
 )
 
-var SessionClosedError = errors.New("Session Closed")
-var SessionBlockedError = errors.New("Session Blocked")
+var SessionClosedError = errors.New("session closed")
+var SessionBlockedError = errors.New("session clocked")
 
 var globalSessionId uint64
 
@@ -181,7 +181,7 @@ func (session *Session) RemoveCloseCallback(handler, key interface{}) {
 		if callback.Handler == handler && callback.Key == key {
 			if session.firstCloseCallback == callback {
 				session.firstCloseCallback = callback.Next
-			} else {
+			} else if prev != nil{
 				prev.Next = callback.Next
 			}
 			if session.lastCloseCallback == callback {

@@ -26,6 +26,18 @@ type TestCodec struct {
 	rw io.ReadWriteCloser
 }
 
+func (c *TestCodec) SocketID() uint32 {
+	return 0
+}
+
+func (c *TestCodec) ClientAddr() string {
+	return ""
+}
+
+func (c *TestCodec) SetReadDeadline(t time.Time) error {
+	return nil
+}
+
 func (c *TestCodec) Send(msg interface{}) error {
 	var head [2]byte
 	binary.LittleEndian.PutUint16(head[:], uint16(len(msg.([]byte))))

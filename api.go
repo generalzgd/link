@@ -21,6 +21,9 @@ type Codec interface {
 	Receive() (interface{}, error)
 	Send(interface{}) error
 	Close() error
+	SocketID() uint32
+	ClientAddr() string
+	SetReadDeadline(t time.Time) error
 }
 
 type ClearSendChan interface {

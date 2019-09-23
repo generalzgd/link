@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/funny/link"
+	"github.com/generalzgd/link"
 )
 
 type MyMessage1 struct {
@@ -76,8 +76,8 @@ func JsonTest(t *testing.T, protocol link.Protocol) {
 	}
 
 	sendMsg3 := map[string]MyMessage1{
-		"a": MyMessage1{"abc", 123},
-		"b": MyMessage1{"def", 456},
+		"a": {"abc", 123},
+		"b": {"def", 456},
 	}
 
 	err = codec.Send(&sendMsg3)

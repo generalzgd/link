@@ -6,11 +6,12 @@ import (
 	"errors"
 	"io"
 	"math"
+	`time`
 
-	"github.com/funny/link"
+	"github.com/generalzgd/link"
 )
 
-var ErrTooLargePacket = errors.New("Too Large Packet")
+var ErrTooLargePacket = errors.New("too large packet")
 
 type FixLenProtocol struct {
 	base        link.Protocol
@@ -117,6 +118,18 @@ type fixlenCodec struct {
 	rw      io.ReadWriter
 	*FixLenProtocol
 	fixlenReadWriter
+}
+
+func (c *fixlenCodec) SocketID() uint32 {
+	return 0
+}
+
+func (c *fixlenCodec) ClientAddr() string {
+	return ""
+}
+
+func (c *fixlenCodec) SetReadDeadline(t time.Time) error {
+	return nil
 }
 
 func (c *fixlenCodec) Receive() (interface{}, error) {
