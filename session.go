@@ -2,6 +2,7 @@ package link
 
 import (
 	"errors"
+	`net`
 	"sync"
 	"sync/atomic"
 )
@@ -18,6 +19,7 @@ type Session struct {
 	sendChan  chan interface{}
 	recvMutex sync.Mutex
 	sendMutex sync.RWMutex
+	readIp    string
 
 	closeFlag          int32
 	closeChan          chan int
@@ -181,7 +183,7 @@ func (session *Session) RemoveCloseCallback(handler, key interface{}) {
 		if callback.Handler == handler && callback.Key == key {
 			if session.firstCloseCallback == callback {
 				session.firstCloseCallback = callback.Next
-			} else if prev != nil{
+			} else if prev != nil {
 				prev.Next = callback.Next
 			}
 			if session.lastCloseCallback == callback {
@@ -199,4 +201,22 @@ func (session *Session) invokeCloseCallbacks() {
 	for callback := session.firstCloseCallback; callback != nil; callback = callback.Next {
 		callback.Func()
 	}
+}
+
+/*
+* 保存真实的ip
+ */
+func (session *Session) SetRealIp(str string) {
+	session.readIp = str
+}
+
+/*
+* 获取真实的ip
+ */
+func (session *Session) GetRealIp() string {
+	if len(session.readIp) > 0 {
+		return session.readIp
+	}
+	ip, _, _ := net.SplitHostPort(session.Codec().ClientAddr())
+	return ip
 }
